@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.acme.mytrader.strategy.TradingStrategy;
 
-public class PriceSourceImpl implements PriceSource {
+public class PriceSourceImpl implements PriceSourceSubject {
 
     private Map<String, Double> priceListeners = new HashMap<>();
     private List<TradingStrategy> tradingStrategies = new ArrayList<>();

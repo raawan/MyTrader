@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.acme.mytrader.execution.ExecutionService;
 import com.acme.mytrader.price.PriceListener;
-import com.acme.mytrader.price.PriceSource;
+import com.acme.mytrader.price.PriceSourceSubject;
 
 /**
  * <pre>
@@ -15,11 +15,11 @@ import com.acme.mytrader.price.PriceSource;
 public class TradingStrategy {
 
     private final ExecutionService executionService;
-    private final PriceSource priceSource;
+    private final PriceSourceSubject priceSource;
     private final List<SecurityTriggerLevel> securityTriggerLevels;
 
     public TradingStrategy(final ExecutionService executionService,
-                           final PriceSource priceSource,
+                           final PriceSourceSubject priceSource,
                            final List<SecurityTriggerLevel> securityTriggerLevels) {
         this.executionService = executionService;
         this.priceSource = priceSource;

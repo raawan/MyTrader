@@ -13,8 +13,8 @@ import java.util.List;
 import com.acme.mytrader.execution.ExecutionService;
 import com.acme.mytrader.price.PriceListener;
 import com.acme.mytrader.price.PriceListenerImpl;
-import com.acme.mytrader.price.PriceSource;
 import com.acme.mytrader.price.PriceSourceImpl;
+import com.acme.mytrader.price.PriceSourceSubject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +26,7 @@ public class TradingStrategyTest {
 
     @Mock
     ExecutionService executionService;
-    PriceSource priceSource;
+    PriceSourceSubject priceSource;
     List<SecurityTriggerLevel> securityTriggerLevels;
 
     @Before
