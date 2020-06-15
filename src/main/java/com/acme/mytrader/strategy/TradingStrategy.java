@@ -1,6 +1,8 @@
 package com.acme.mytrader.strategy;
 
+import com.acme.mytrader.execution.ExecutionService;
 import com.acme.mytrader.price.PriceListener;
+import com.acme.mytrader.price.PriceSource;
 
 /**
  * <pre>
@@ -9,7 +11,17 @@ import com.acme.mytrader.price.PriceListener;
  * </pre>
  */
 public class TradingStrategy {
+
+    private final ExecutionService executionService;
+    private final PriceSource priceSource;
+
+    public TradingStrategy(final ExecutionService executionService, final PriceSource priceSource) {
+        this.executionService = executionService;
+        this.priceSource = priceSource;
+    }
+
     public void executeStrategy(final PriceListener listener) {
+
 
     }
 }
