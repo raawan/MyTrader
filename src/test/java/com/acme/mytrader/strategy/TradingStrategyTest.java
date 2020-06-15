@@ -35,8 +35,7 @@ public class TradingStrategyTest {
 
         securityTriggerLevels = new ArrayList<>();
         priceSource = new PriceSourceImpl();
-        final TradingStrategy tradingStrategy = new TradingStrategy(executionService, priceSource, securityTriggerLevels);
-        priceSource.addTradingStrategy(tradingStrategy);
+        new TradingStrategy(executionService, priceSource, securityTriggerLevels);
     }
 
     @Test

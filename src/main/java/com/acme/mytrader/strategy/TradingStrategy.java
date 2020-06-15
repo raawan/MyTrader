@@ -24,6 +24,7 @@ public class TradingStrategy {
         this.executionService = executionService;
         this.priceSource = priceSource;
         this.securityTriggerLevels = securityTriggerLevels;
+        priceSource.addTradingStrategy(this);
     }
 
     public void executeStrategy(final PriceListener listener) {
