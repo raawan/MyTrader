@@ -25,11 +25,13 @@ public class TradingStrategyTest {
     PriceSource priceSource;
 
     @Test
-    public void testNothing() {
+    public void shouldCorrectTradingStrategyGetsExecutedOnReceivingSecurityPriceUpdateThatMeetsTheTriggerLevel() {
         //Given
         priceSource = new PriceSourceImpl();
-        new TradingStrategy(executionService, priceSource);
+        final TradingStrategy tradingStrategy = new TradingStrategy(executionService, priceSource);
         doNothing().when(executionService).buy(anyString(), anyDouble(), anyInt());
+
+        priceSource.addTradingStrategy(tradingStrategy);
 
         PriceListener priceListener = new PriceListenerImpl();
         priceListener.priceUpdate("IBM", 45.0);

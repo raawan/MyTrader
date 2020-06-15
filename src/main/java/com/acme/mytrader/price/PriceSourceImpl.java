@@ -10,11 +10,12 @@ import com.acme.mytrader.strategy.TradingStrategy;
 public class PriceSourceImpl implements PriceSource {
 
     private Map<String, Double> priceListeners = new HashMap<>();
-    List<TradingStrategy> tradingStrategies = new ArrayList<>();
+    private List<TradingStrategy> tradingStrategies = new ArrayList<>();
 
     @Override
     public void addPriceListener(final PriceListener listener) {
         priceListeners.put(listener.getSecurity(), listener.getPrice());
+        notifyTradingStrategy(listener);
     }
 
     @Override

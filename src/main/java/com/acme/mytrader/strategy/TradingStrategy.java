@@ -22,6 +22,9 @@ public class TradingStrategy {
 
     public void executeStrategy(final PriceListener listener) {
 
+        if(listener.getSecurity().equalsIgnoreCase("IBM") && listener.getPrice()<50) {
+            executionService.buy(listener.getSecurity(),listener.getPrice(),100);
+        }
 
     }
 }
