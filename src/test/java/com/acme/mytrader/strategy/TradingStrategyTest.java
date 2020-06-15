@@ -15,6 +15,7 @@ import com.acme.mytrader.price.PriceListener;
 import com.acme.mytrader.price.PriceListenerImpl;
 import com.acme.mytrader.price.PriceSource;
 import com.acme.mytrader.price.PriceSourceImpl;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -28,17 +29,19 @@ public class TradingStrategyTest {
     PriceSource priceSource;
     List<SecurityTriggerLevel> securityTriggerLevels;
 
+    @Before
+    public void setUp() {
+        doNothing().when(executionService).buy(anyString(), anyDouble(), anyInt());
+    }
+
     @Test
     public void shouldCorrectTradingStrategyGetsExecutedOnReceivingSecurityPriceUpdateThatMeetsTheTriggerLevel() {
         //Given
         securityTriggerLevels = new ArrayList<>();
         SecurityTriggerLevel securityTriggerLevel = new SecurityTriggerLevel("IBM", 50.0, 100);
         securityTriggerLevels.add(securityTriggerLevel);
-
         priceSource = new PriceSourceImpl();
         final TradingStrategy tradingStrategy = new TradingStrategy(executionService, priceSource, securityTriggerLevels);
-        doNothing().when(executionService).buy(anyString(), anyDouble(), anyInt());
-
         priceSource.addTradingStrategy(tradingStrategy);
 
         PriceListener priceListener = new PriceListenerImpl();
@@ -50,5 +53,26 @@ public class TradingStrategyTest {
         //Then
         verify(executionService, times(1)).buy(anyString(), anyDouble(), anyInt());
 
+    }
+
+    @Test
+    public void shouldNoTradingStrategyGetsExecutedOnReceivingSecurityPriceUpdateThatDoNotMeetsTheTriggerLevel() {
+
+        //Given
+        securityTriggerLevels = new ArrayList<>();
+        SecurityTriggerLevel securityTriggerLevel = new SecurityTriggerLevel("CISCO", 70.0, 100);
+        securityTriggerLevels.add(securityTriggerLevel);
+        priceSource = new PriceSourceImpl();
+        final TradingStrategy tradingStrategy = new TradingStrategy(executionService, priceSource, securityTriggerLevels);
+        priceSource.addTradingStrategy(tradingStrategy);
+
+        PriceListener priceListener = new PriceListenerImpl();
+        priceListener.priceUpdate("CISCO", 75.0);
+
+        //When
+        priceSource.addPriceListener(priceListener);
+
+        //Then
+        verify(executionService, times(0)).buy(anyString(), anyDouble(), anyInt());
     }
 }
