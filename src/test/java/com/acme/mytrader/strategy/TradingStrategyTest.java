@@ -32,18 +32,18 @@ public class TradingStrategyTest {
     @Before
     public void setUp() {
         doNothing().when(executionService).buy(anyString(), anyDouble(), anyInt());
+
+        securityTriggerLevels = new ArrayList<>();
+        priceSource = new PriceSourceImpl();
+        final TradingStrategy tradingStrategy = new TradingStrategy(executionService, priceSource, securityTriggerLevels);
+        priceSource.addTradingStrategy(tradingStrategy);
     }
 
     @Test
     public void shouldCorrectTradingStrategyGetsExecutedOnReceivingSecurityPriceUpdateThatMeetsTheTriggerLevel() {
         //Given
-        securityTriggerLevels = new ArrayList<>();
         SecurityTriggerLevel securityTriggerLevel = new SecurityTriggerLevel("IBM", 50.0, 100);
         securityTriggerLevels.add(securityTriggerLevel);
-        priceSource = new PriceSourceImpl();
-        final TradingStrategy tradingStrategy = new TradingStrategy(executionService, priceSource, securityTriggerLevels);
-        priceSource.addTradingStrategy(tradingStrategy);
-
         PriceListener priceListener = new PriceListenerImpl();
         priceListener.priceUpdate("IBM", 45.0);
 
@@ -59,13 +59,8 @@ public class TradingStrategyTest {
     public void shouldNoTradingStrategyGetsExecutedOnReceivingSecurityPriceUpdateThatDoNotMeetsTheTriggerLevel() {
 
         //Given
-        securityTriggerLevels = new ArrayList<>();
         SecurityTriggerLevel securityTriggerLevel = new SecurityTriggerLevel("CISCO", 70.0, 100);
         securityTriggerLevels.add(securityTriggerLevel);
-        priceSource = new PriceSourceImpl();
-        final TradingStrategy tradingStrategy = new TradingStrategy(executionService, priceSource, securityTriggerLevels);
-        priceSource.addTradingStrategy(tradingStrategy);
-
         PriceListener priceListener = new PriceListenerImpl();
         priceListener.priceUpdate("CISCO", 75.0);
 
