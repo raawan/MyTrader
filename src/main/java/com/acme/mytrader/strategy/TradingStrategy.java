@@ -27,12 +27,22 @@ public class TradingStrategy {
     }
 
     public void executeStrategy(final PriceListener listener) {
-    
+
         securityTriggerLevels.stream()
-                .filter(securityTriggerLevel -> securityTriggerLevel.getSecurity().equalsIgnoreCase(listener.getSecurity()) &&
-                        securityTriggerLevel.getPrice() >= listener.getPrice())
-                .forEach(securityTriggerLevel ->  executionService.buy(listener.getSecurity(), listener.getPrice(),
-                        securityTriggerLevel.getVolume()));
+                .filter(securityTriggerLevel -> triggerFilter(securityTriggerLevel, listener))
+                .forEach(securityTriggerLevel -> buySecurity(securityTriggerLevel, listener));
+    }
+
+    private void buySecurity(final SecurityTriggerLevel securityTriggerLevel, final PriceListener listener) {
+        executionService.buy(listener.getSecurity(), listener.getPrice(), securityTriggerLevel.getVolume());
+    }
+
+    private boolean triggerFilter(final SecurityTriggerLevel securityTriggerLevel, final PriceListener listener) {
+        if (securityTriggerLevel.getSecurity().equalsIgnoreCase(listener.getSecurity()) &&
+                securityTriggerLevel.getPrice() >= listener.getPrice()) {
+            return true;
+        }
+        return false;
     }
 
 }
